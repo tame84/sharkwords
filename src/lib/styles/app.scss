@@ -1,0 +1,117 @@
+@use './vars.scss' as *;
+@import './reset.css';
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background: $bg;
+	font-family: $font;
+	color: $fg;
+	font-size: 1rem;
+	font-weight: 400;
+	letter-spacing: 0.36px;
+}
+
+a {
+	display: inline-block;
+}
+
+.btn,
+.input {
+	height: 44px;
+	border-radius: 8px;
+	transition: 0.15s ease;
+}
+.btn {
+	width: fit-content;
+	padding: 0.75rem 1rem;
+	text-align: center;
+	font-size: 0.875rem;
+	cursor: pointer;
+
+	&--primary {
+		background: $priamry;
+		border: $border;
+		color: $fg-reverse;
+
+		&:hover {
+			background: $primary-light;
+		}
+	}
+	&--secondary {
+		background: $black;
+		border: $border-reverse;
+		color: $fg-reverse;
+
+		&:hover {
+			background: $black-light;
+		}
+	}
+}
+.input {
+	padding: 0.75rem 0.625rem;
+	font-size: 0.875rem;
+
+	&::placeholder {
+		color: $fg-grey;
+	}
+	&--text {
+		background: $bg-dark;
+		border: $border;
+	}
+}
+
+h1 {
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+h2 {
+	font-size: 1.3rem;
+	font-weight: 600;
+}
+
+.alert {
+	border-radius: 8px;
+	padding: 1rem;
+	border: $border;
+
+	&--warning {
+		background: $primary-light;
+	}
+	&--error {
+		background: $red-light;
+	}
+	&--success {
+		background: $green-light;
+	}
+}
+
+section {
+	margin: 0 auto 4rem;
+	max-width: $max-width;
+	background: $bg-light;
+	border: $border;
+	border-radius: 0.5rem;
+
+	header {
+		padding: 2rem 1rem;
+	}
+	.content {
+		padding: 1rem;
+
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+
+			.inputs-group {
+				width: 100%;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 0.75rem;
+			}
+		}
+	}
+}

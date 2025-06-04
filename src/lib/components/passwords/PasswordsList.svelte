@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 
-	type Passwords = { id: string; website: string; label: string }[];
+	type Passwords = { id: string; website: string; label: string | null }[];
 	type Props = {
 		passwords: Passwords;
 	};
@@ -15,6 +15,13 @@
 	let showEditPasswordModal = $state(false);
 	let showDeleteModal = $state(false);
 	let filteredPasswords = $state(passwords);
+	let search = $state('');
+
+	$effect(() => {
+		if (!search) {
+			filteredPasswords = passwords;
+		}
+	});
 
 	const handleActionRequest = (e: Event, type: 'copy' | 'edit' | 'delete', pwdId: string): void => {
 		e.preventDefault();
@@ -93,7 +100,7 @@
 		e.preventDefault();
 
 		const input = e.target as HTMLInputElement;
-		const search = input.value.trim();
+		search = input.value.trim();
 
 		if (search) {
 			filteredPasswords = passwords.filter((pwd) =>
@@ -113,11 +120,12 @@
 				<p>Enter your master password to authorize the action</p>
 			</header>
 			<div class="content">
-				<form onsubmit={handleAction}>
+				<form onsubmit={handleAction} autocomplete="off">
 					<input type="password" name="masterPassword" placeholder="Master password" />
-					<button type="submit">Submit</button>
+					<button type="submit" class="btn btn--primary">Submit</button>
 				</form>
 				<button
+					class="btn btn--secondary"
 					onclick={() => {
 						askMasterPassword = false;
 					}}>Go back</button
@@ -134,11 +142,12 @@
 				<p>Enter a new password to replace the old one</p>
 			</header>
 			<div class="content">
-				<form onsubmit={handleEditPassword}>
+				<form onsubmit={handleEditPassword} autocomplete="off">
 					<input type="text" name="password" placeholder="Password" />
-					<button type="submit">Submit</button>
+					<button type="submit" class="btn btn--primary">Submit</button>
 				</form>
 				<button
+					class="btn btn--secondary"
 					onclick={() => {
 						askMasterPassword = false;
 					}}>Go back</button
@@ -155,10 +164,11 @@
 				<p>Are you sure to delete this password ?</p>
 			</header>
 			<div class="content">
-				<form onsubmit={handleDeletePassword}>
-					<button type="submit">Yes</button>
+				<form onsubmit={handleDeletePassword} autocomplete="off">
+					<button type="submit" class="btn btn--primary">Yes</button>
 				</form>
 				<button
+					class="btn btn--secondary"
 					onclick={() => {
 						askMasterPassword = false;
 					}}>Go back</button
@@ -172,14 +182,24 @@
 		<h2>My passwords</h2>
 	</header>
 	<div class="content">
-		<form onsubmit={(e) => e.preventDefault()}>
+		<div class="search-bar">
 			<input
+				class="input input--text"
 				type="text"
 				name="website"
 				placeholder="Website, e.g. google.com, youtube.com, github.com, ..."
+				autocomplete="off"
 				oninput={handleFilterPasswordsByWebsite}
 			/>
-		</form>
+			<div class="icon">
+				<svg xmlns="http://www.w3.org/2000/svg" width="19.2" height="19.2" viewBox="0 0 24 24"
+					><path
+						fill="currentColor"
+						d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
+					/></svg
+				>
+			</div>
+		</div>
 		<table>
 			<thead>
 				<tr>
@@ -262,3 +282,54 @@
 		</table>
 	</div>
 </section>
+
+<style lang="scss">
+	@use '../../styles/vars.scss' as *;
+
+	.search-bar {
+		width: 100%;
+		position: relative;
+		margin-bottom: 2rem;
+
+		input {
+			width: 100%;
+		}
+		.icon {
+			position: absolute;
+			top: 50%;
+			right: 0.625rem;
+			transform: translateY(-40%);
+			fill: $fg-grey;
+		}
+	}
+	table {
+		tr {
+			border-bottom: $border;
+			display: grid;
+			gap: 0.5rem;
+			grid-template-columns: 28.33% 28.33% 28.33% 28.33%;
+		}
+		th,
+		td {
+			padding: 0.75rem 0.5rem;
+			overflow: hidden;
+		}
+		th {
+			font-weight: 600;
+		}
+		td {
+			color: $fg-grey;
+		}
+
+		tbody {
+			tr {
+				transition: 0.15s ease-out;
+
+				&:hover {
+					background: $primary-light;
+					color: $fg;
+				}
+			}
+		}
+	}
+</style>

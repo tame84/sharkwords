@@ -5,6 +5,7 @@
 	let { data } = $props();
 </script>
 
-<h1>Dashboard</h1>
-<AddPasswordForm />
-<PasswordsList passwords={data.passwords} />
+<main>
+	<AddPasswordForm />
+	<PasswordsList passwords={data.passwords ?? []} />
+</main>

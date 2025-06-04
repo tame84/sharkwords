@@ -1,0 +1,28 @@
+@font-face {
+	font-family: 'Inter';
+	src: url('/fonts/Inter-Variable.woff2') format('woff2');
+	font-size: normal;
+	font-display: swap;
+}
+
+$font: 'Inter', Arial, Helvetica, sans-serif;
+
+$bg: #f9f9f9;
+$bg-light: #ffffff;
+$bg-dark: #e2e2e2;
+
+$fg: #090909;
+$fg-reverse: #fafafa;
+$fg-grey: #2f2f2f;
+
+$priamry: #ff5900;
+$primary-light: rgba(255, 122, 50, 0.3);
+$black: #090909;
+$black-light: #2b2b2b;
+$red-light: rgba(255, 0, 0, 0.3);
+$green-light: rgba(0, 128, 0, 0.3);
+
+$border: 1px solid rgba(0, 0, 0, 0.2);
+$border-reverse: 1px solid rgba(255, 255, 255, 0.2);
+
+$max-width: 1080px;

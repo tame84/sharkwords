@@ -17,6 +17,13 @@ export const POST = async ({ request }) => {
 	if (masterPassword !== masterPasswordConfirm) {
 		return json({ status: 400, error: true, message: "Master passwords don't match" });
 	}
+	if (website.length > 32 || label.length > 32) {
+		return json({
+			status: 400,
+			error: true,
+			message: 'Website and label have a 32 maximum length'
+		});
+	}
 
 	try {
 		const session = await auth.api.getSession({

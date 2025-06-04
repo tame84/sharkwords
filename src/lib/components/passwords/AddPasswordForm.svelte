@@ -3,11 +3,18 @@
 	import { generatePassword } from '$lib/utils/password';
 
 	let passwordInput: HTMLInputElement;
-	let resultMessage = $state('');
+	let errorMessage = $state('');
+	let successMessage = $state('');
 
 	const handleGeneratePassword = (e: Event): void => {
 		e.preventDefault();
 		passwordInput.value = generatePassword();
+	};
+	const clearMessage = () => {
+		setTimeout(() => {
+			errorMessage = '';
+			successMessage = '';
+		}, 3000);
 	};
 	const handleAddPassword = async (e: SubmitEvent) => {
 		e.preventDefault();
@@ -28,13 +35,15 @@
 		const data = await response.json();
 
 		if (!response.ok || data.error) {
-			resultMessage = data.message;
+			errorMessage = data.message;
+			clearMessage();
 			return;
 		}
 
-		resultMessage = data.data.message;
+		successMessage = data.data.message;
 		form.reset();
 		await invalidateAll();
+		clearMessage();
 	};
 </script>
 
@@ -43,28 +52,54 @@
 		<h2>Add new password</h2>
 	</header>
 	<div class="content">
-		<form onsubmit={handleAddPassword}>
-			<input
-				type="text"
-				name="website"
-				placeholder="Website, e.g. google.com, youtube.com, github.com, ..."
-			/>
-			<input type="text" name="label" placeholder="Label" />
-			<div>
-				<input type="text" name="password" placeholder="Password" bind:this={passwordInput} />
-				<button type="button" onclick={handleGeneratePassword}>Generate password</button>
+		<form onsubmit={handleAddPassword} autocomplete="off">
+			<div class="inputs-group">
+				<input
+					type="text"
+					name="website"
+					placeholder="Website, e.g. google.com, youtube.com, github.com, ..."
+					class="input input--text"
+				/>
+				<input type="text" name="label" placeholder="Label" class="input input--text" />
 			</div>
-			<div class="warning">
+			<div class="inputs-group">
+				<input
+					type="text"
+					name="password"
+					placeholder="Password"
+					class="input input--text"
+					bind:this={passwordInput}
+				/>
+				<button type="button" class="btn btn--secondary" onclick={handleGeneratePassword}
+					>Generate password</button
+				>
+			</div>
+			<div class="inputs-group">
+				<input
+					type="password"
+					name="masterPassword"
+					placeholder="Master password"
+					class="input input--text"
+				/>
+				<input
+					type="password"
+					name="masterPasswordConfirm"
+					placeholder="Confirm master password"
+					class="input input--text"
+				/>
+			</div>
+
+			<div class="alert alert--warning">
 				<p>
 					Your master password is used to encrypt and decrypt all your passwords. Do not lose it; if
 					you do, we will not be able to change it and all your password will be lost.
 				</p>
 			</div>
-			<input type="password" name="masterPassword" placeholder="Master password" />
-			<input type="password" name="masterPasswordConfirm" placeholder="Confirm master password" />
-			<button type="submit">Submit</button>
-			{#if resultMessage}
-				<p class={resultMessage ? 'error' : 'success'}>{resultMessage}</p>
+			<button type="submit" class="btn btn--primary">Submit</button>
+			{#if errorMessage}
+				<p class="alert alert--error">{errorMessage}</p>
+			{:else if successMessage}
+				<p class="alert alert--success">{successMessage}</p>
 			{/if}
 		</form>
 	</div>

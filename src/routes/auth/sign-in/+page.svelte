@@ -13,7 +13,7 @@
 		<form use:enhance method="POST">
 			<input type="email" name="email" placeholder="Email" />
 			<input type="password" name="password" placeholder="Password" />
-			<button type="submit">Submit</button>
+			<button type="submit" class="btn btn--primary">Submit</button>
 			{#if form?.error}
 				<p>{form.message}</p>
 			{/if}
