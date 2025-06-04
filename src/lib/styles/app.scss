@@ -3,6 +3,16 @@
 
 html {
 	scroll-behavior: smooth;
+
+	::-webkit-scrollbar {
+		width: 6px;
+		background: $primary-light;
+		border-left: $border;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: $primary;
+		border-radius: 1rem;
+	}
 }
 
 body {
@@ -32,7 +42,7 @@ a {
 	cursor: pointer;
 
 	&--primary {
-		background: $priamry;
+		background: $primary;
 		border: $border;
 		color: $fg-reverse;
 
