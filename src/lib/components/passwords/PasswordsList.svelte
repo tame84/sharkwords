@@ -117,7 +117,7 @@
 		<div class="modal-content">
 			<header>
 				<h2>Authorization</h2>
-				<p>Enter your master password to authorize the action</p>
+				<p>Enter your master password to authorize the action : "{actionType}"</p>
 			</header>
 			<div class="content">
 				<form onsubmit={handleAction} autocomplete="off">
