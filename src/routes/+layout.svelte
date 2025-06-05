@@ -6,6 +6,11 @@
 	let { children, data } = $props();
 </script>
 
+<svelte:head>
+	<title>Sharkwords • Password Manager</title>
+	<meta name="description" content="Sharkwords is a password manager builded for learning." />
+</svelte:head>
+
 <Header username={data.session?.user.name} />
 {@render children()}
 <Footer />

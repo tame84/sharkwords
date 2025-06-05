@@ -5,6 +5,10 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Sharkwords • Dashboard</title>
+</svelte:head>
+
 <main>
 	<AddPasswordForm />
 	<PasswordsList passwords={data.passwords ?? []} />

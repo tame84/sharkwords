@@ -90,16 +90,16 @@
 			</div>
 
 			<div class="alert alert--warning">
-				<p>
+				<p aria-live="polite">
 					Your master password is used to encrypt and decrypt all your passwords. Do not lose it; if
 					you do, we will not be able to change it and all your password will be lost.
 				</p>
 			</div>
 			<button type="submit" class="btn btn--primary">Submit</button>
 			{#if errorMessage}
-				<p class="alert alert--error">{errorMessage}</p>
+				<p class="alert alert--error" aria-live="assertive">{errorMessage}</p>
 			{:else if successMessage}
-				<p class="alert alert--success">{successMessage}</p>
+				<p class="alert alert--success" aria-live="assertive">{successMessage}</p>
 			{/if}
 		</form>
 	</div>

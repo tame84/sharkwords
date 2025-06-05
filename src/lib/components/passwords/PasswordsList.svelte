@@ -154,7 +154,7 @@
 					</div>
 					{#if askMasterPasswordErrorMessage}
 						<div class="alert alert--error">
-							<p>{askMasterPasswordErrorMessage}</p>
+							<p aria-live="assertive">{askMasterPasswordErrorMessage}</p>
 						</div>
 					{/if}
 				</form>
@@ -178,7 +178,7 @@
 					</div>
 					{#if editPasswordErrorMessage}
 						<div class="alert alert--error">
-							<p>{editPasswordErrorMessage}</p>
+							<p aria-live="assertive">{editPasswordErrorMessage}</p>
 						</div>
 					{/if}
 				</form>
@@ -195,7 +195,7 @@
 			</header>
 			<div class="content">
 				<form onsubmit={handleDeletePassword} autocomplete="off">
-					<div class="btn-groups">
+					<div class="btns-group">
 						<button type="submit" class="btn btn--primary">Yes</button>
 						<button class="btn btn--secondary" onclick={handleCloseModal}>Go back</button>
 					</div>
@@ -218,7 +218,7 @@
 				autocomplete="off"
 				oninput={handleFilterPasswordsByWebsite}
 			/>
-			<div class="icon">
+			<div class="icon" aria-hidden="true">
 				<svg xmlns="http://www.w3.org/2000/svg" width="19.2" height="19.2" viewBox="0 0 24 24"
 					><path
 						fill="currentColor"
@@ -228,7 +228,7 @@
 			</div>
 		</div>
 		{#if filteredPasswords.length > 0}
-			<table>
+			<table aria-label="My saved passwords">
 				<thead>
 					<tr>
 						<th>Website</th>
@@ -240,21 +240,23 @@
 
 				<tbody>
 					{#each filteredPasswords as password (password.id)}
-						<tr>
-							<td>{password.website}</td>
-							<td>{password.label ? password.label : '-'}</td>
-							<td>
+						<tr tabindex="0">
+							<td data-label="Website" aria-label="Website">{password.website}</td>
+							<td data-label="Label" aria-label="Label">{password.label ? password.label : '-'}</td>
+							<td data-label="Password" aria-label="Password">
 								<input
 									type="password"
 									disabled
 									value="••••••••••••••••••"
 									class="password-input"
 									data-id={password.id}
+									aria-label="Password placeholder"
 								/>
 							</td>
-							<td>
+							<td data-label="Actions" aria-label="Actions">
 								<div class="actions">
 									<button
+										tabindex="0"
 										onclick={(e) => handleActionRequest(e, 'copy', password.id)}
 										aria-label="Copy"
 										><svg
@@ -269,6 +271,7 @@
 										></button
 									>
 									<button
+										tabindex="0"
 										onclick={(e) => handleActionRequest(e, 'edit', password.id)}
 										aria-label="Edit"
 										><svg
@@ -283,6 +286,7 @@
 										></button
 									>
 									<button
+										tabindex="0"
 										onclick={(e) => handleActionRequest(e, 'delete', password.id)}
 										aria-label="Delete"
 										><svg
@@ -304,7 +308,7 @@
 			</table>
 		{:else}
 			<div class="alert alert--error">
-				<p>No password was found</p>
+				<p aria-live="polite">No password was found</p>
 			</div>
 		{/if}
 	</div>
@@ -324,27 +328,64 @@
 		.icon {
 			position: absolute;
 			top: 50%;
-			right: 0.625rem;
+			right: 1px;
 			transform: translateY(-40%);
 			fill: $fg-grey;
+			background: $bg-dark;
+			padding: 0 0.625rem;
 		}
 	}
 	table {
 		width: 100%;
 		table-layout: auto;
 
+		@media screen and (max-width: 580px) {
+			display: block;
+			width: 100%;
+
+			thead,
+			tbody,
+			th,
+			td,
+			tr {
+				display: block;
+				width: 100%;
+			}
+
+			thead {
+				display: none;
+			}
+		}
+
 		tr {
 			border-bottom: $border;
+
+			@media screen and (max-width: 580px) {
+				border: none;
+				margin-bottom: 1rem;
+				border-radius: 8px;
+				padding: 0.5rem;
+				background: $bg;
+			}
 		}
 		th,
 		td {
-			padding: 0.75rem 0.5rem;
+			padding: 0.75rem 1rem;
 			overflow: hidden;
 
 			&:last-child,
 			&:nth-child(3) {
 				white-space: nowrap;
 				width: 1%;
+
+				@media screen and (max-width: 580px) {
+					width: auto;
+				}
+			}
+			&:nth-child(3) {
+				@media screen and (max-width: 720px) {
+					display: none;
+				}
 			}
 		}
 		th {
@@ -352,16 +393,42 @@
 		}
 		td {
 			color: $fg-grey;
+
+			@media screen and (max-width: 580px) {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0.5rem 0.5rem;
+
+				&::before {
+					content: attr(data-label);
+					font-weight: 600;
+					color: $fg;
+				}
+			}
 		}
 		.actions {
-			visibility: hidden;
+			opacity: 0;
+			pointer-events: none;
+
+			@media screen and (max-width: 580px) {
+				opacity: 1;
+				pointer-events: auto;
+			}
 
 			button {
 				cursor: pointer;
 
-				&:hover {
+				&:hover,
+				&:focus {
 					color: $primary;
 				}
+			}
+
+			&:hover,
+			&:focus-within {
+				opacity: 1;
+				pointer-events: auto;
 			}
 		}
 
@@ -369,14 +436,16 @@
 			tr {
 				transition: 0.2s ease-out;
 
-				&:hover {
+				&:hover,
+				&:focus {
 					background: $bg-primary;
 
 					td {
 						color: $fg;
 					}
 					.actions {
-						visibility: visible;
+						opacity: 1;
+						pointer-events: auto;
 					}
 				}
 			}

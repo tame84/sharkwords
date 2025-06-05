@@ -41,12 +41,17 @@ a {
 	font-size: 0.875rem;
 	cursor: pointer;
 
+	@media screen and (max-width: 460px) {
+		width: 100%;
+	}
+
 	&--primary {
 		background: $primary;
 		border: $border;
 		color: $fg-reverse;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background: $primary-light;
 		}
 	}
@@ -55,7 +60,8 @@ a {
 		border: $border-reverse;
 		color: $fg-reverse;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background: $black-light;
 		}
 	}
@@ -64,14 +70,28 @@ a {
 		padding: 0;
 		color: $fg-grey;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $fg;
 		}
+	}
+}
+.btns-group {
+	display: flex;
+	gap: 0.25rem;
+
+	@media screen and (max-width: 460px) {
+		flex-direction: column;
 	}
 }
 .input {
 	padding: 0.75rem 0.625rem;
 	font-size: 0.875rem;
+	transition: 0.15s ease-out;
+
+	@media screen and (max-width: 580px) {
+		width: 100%;
+	}
 
 	&::placeholder {
 		color: $fg-grey;
@@ -79,6 +99,10 @@ a {
 	&--text {
 		background: $bg-dark;
 		border: $border;
+
+		&:focus {
+			border-color: $primary-light;
+		}
 	}
 }
 
@@ -104,6 +128,16 @@ h2 {
 	}
 	&--success {
 		background: $bg-green;
+	}
+}
+
+main,
+header,
+footer {
+	padding: 0 2rem;
+
+	@media screen and (max-width: 460px) {
+		padding: 0 1rem;
 	}
 }
 
@@ -135,6 +169,10 @@ section,
 .modal-content {
 	width: 500px;
 
+	@media screen and (max-width: 540px) {
+		width: 100%;
+	}
+
 	h2 {
 		margin-bottom: 1rem;
 	}
@@ -148,6 +186,11 @@ section {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 0.75rem;
+
+		@media screen and (max-width: 580px) {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 }
 .container {
@@ -177,4 +220,5 @@ section {
 	left: 0;
 	display: grid;
 	place-content: center;
+	padding: 0 1rem;
 }

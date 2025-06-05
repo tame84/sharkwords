@@ -24,7 +24,7 @@
 		<h1>Sharkwords</h1>
 		<div class="account">
 			{#if username}
-				<p>{username}</p>
+				<p aria-label="Username">{username}</p>
 				<form onsubmit={handleSignOut}>
 					<button type="submit" class="btn btn--primary">Sign out</button>
 				</form>
@@ -51,6 +51,10 @@
 	}
 	h1 {
 		text-align: center;
+
+		@media screen and (max-width: 720px) {
+			text-align: left;
+		}
 	}
 	.account {
 		display: flex;
@@ -60,5 +64,11 @@
 		top: 50%;
 		transform: translateY(-50%);
 		right: 0;
+
+		p {
+			@media screen and (max-width: 420px) {
+				visibility: hidden;
+			}
+		}
 	}
 </style>
