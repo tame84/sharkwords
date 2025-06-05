@@ -120,8 +120,7 @@ section,
 }
 .container,
 .modal-content {
-	width: 100%;
-	max-width: 500px;
+	width: 500px;
 
 	h2 {
 		margin-bottom: 1rem;
@@ -157,7 +156,7 @@ section {
 }
 .modal {
 	z-index: 100;
-	background: red;
+	background: rgba(0, 0, 0, 0.3);
 	height: 100%;
 	width: 100%;
 	position: fixed;

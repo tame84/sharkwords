@@ -33,6 +33,8 @@
 		passwordId = pwdId;
 	};
 	const handleAction = async (e: Event): Promise<void> => {
+		e.preventDefault();
+
 		if (!actionType) {
 			return;
 		}
@@ -225,18 +227,18 @@
 				>
 			</div>
 		</div>
-		<table>
-			<thead>
-				<tr>
-					<th>Website</th>
-					<th>Label</th>
-					<th>Password</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
+		{#if filteredPasswords.length > 0}
+			<table>
+				<thead>
+					<tr>
+						<th>Website</th>
+						<th>Label</th>
+						<th>Password</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
 
-			<tbody>
-				{#if filteredPasswords.length > 0}
+				<tbody>
 					{#each filteredPasswords as password (password.id)}
 						<tr>
 							<td>{password.website}</td>
@@ -257,8 +259,8 @@
 										aria-label="Copy"
 										><svg
 											xmlns="http://www.w3.org/2000/svg"
-											width="19.2"
-											height="19.2"
+											width="24"
+											height="24"
 											viewBox="0 0 24 24"
 											><path
 												fill="currentColor"
@@ -271,8 +273,8 @@
 										aria-label="Edit"
 										><svg
 											xmlns="http://www.w3.org/2000/svg"
-											width="19.2"
-											height="19.2"
+											width="24"
+											height="24"
 											viewBox="0 0 24 24"
 											><path
 												fill="currentColor"
@@ -285,8 +287,8 @@
 										aria-label="Delete"
 										><svg
 											xmlns="http://www.w3.org/2000/svg"
-											width="19.2"
-											height="19.2"
+											width="24"
+											height="24"
 											viewBox="0 0 24 24"
 											><path
 												fill="currentColor"
@@ -298,13 +300,13 @@
 							</td>
 						</tr>
 					{/each}
-				{:else}
-					<tr>
-						<td colspan="4">No password found</td>
-					</tr>
-				{/if}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		{:else}
+			<div class="alert alert--error">
+				<p>No password was found</p>
+			</div>
+		{/if}
 	</div>
 </section>
 
@@ -328,16 +330,22 @@
 		}
 	}
 	table {
+		width: 100%;
+		table-layout: auto;
+
 		tr {
 			border-bottom: $border;
-			display: grid;
-			gap: 0.5rem;
-			grid-template-columns: 28.33% 28.33% 28.33% 28.33%;
 		}
 		th,
 		td {
 			padding: 0.75rem 0.5rem;
 			overflow: hidden;
+
+			&:last-child,
+			&:nth-child(3) {
+				white-space: nowrap;
+				width: 1%;
+			}
 		}
 		th {
 			font-weight: 600;
@@ -345,14 +353,31 @@
 		td {
 			color: $fg-grey;
 		}
+		.actions {
+			visibility: hidden;
+
+			button {
+				cursor: pointer;
+
+				&:hover {
+					color: $primary;
+				}
+			}
+		}
 
 		tbody {
 			tr {
-				transition: 0.15s ease-out;
+				transition: 0.2s ease-out;
 
 				&:hover {
 					background: $bg-primary;
-					color: $fg;
+
+					td {
+						color: $fg;
+					}
+					.actions {
+						visibility: visible;
+					}
 				}
 			}
 		}
