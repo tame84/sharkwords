@@ -9,10 +9,12 @@
 	let { passwords }: Props = $props();
 
 	let askMasterPassword = $state(false);
+	let askMasterPasswordErrorMessage = $state('');
 	let actionType = $state('');
 	let passwordId = $state('');
 	let masterPassword = $state('');
 	let showEditPasswordModal = $state(false);
+	let editPasswordErrorMessage = $state('');
 	let showDeleteModal = $state(false);
 	let filteredPasswords = $state(passwords);
 	let search = $state('');
@@ -45,8 +47,8 @@
 		});
 		const data = await response.json();
 
-		if (!response.ok || data.error) {
-			return;
+		if (data.error) {
+			return (askMasterPasswordErrorMessage = data.message);
 		}
 
 		const password = data.data.password;
@@ -75,10 +77,15 @@
 		const formData = new FormData(form);
 		const password = formData.get('password') as string;
 
-		await fetch('/api/password/edit', {
+		const response = await fetch('/api/password/edit', {
 			method: 'POST',
 			body: JSON.stringify({ passwordId, password, masterPassword })
 		});
+		const data = await response.json();
+
+		if (data.error) {
+			return (editPasswordErrorMessage = data.message);
+		}
 
 		masterPassword = '';
 		showEditPasswordModal = false;
@@ -96,7 +103,7 @@
 		showDeleteModal = false;
 		await invalidateAll();
 	};
-	const handleFilterPasswordsByWebsite = (e: Event) => {
+	const handleFilterPasswordsByWebsite = (e: Event): void => {
 		e.preventDefault();
 
 		const input = e.target as HTMLInputElement;
@@ -110,6 +117,18 @@
 			filteredPasswords = passwords;
 		}
 	};
+	const handleCloseModal = (e: Event): void => {
+		e.preventDefault();
+
+		askMasterPassword = false;
+		askMasterPasswordErrorMessage = '';
+		showEditPasswordModal = false;
+		editPasswordErrorMessage = '';
+		showDeleteModal = false;
+		masterPassword = '';
+		actionType = '';
+		passwordId = '';
+	};
 </script>
 
 {#if askMasterPassword}
@@ -117,19 +136,26 @@
 		<div class="modal-content">
 			<header>
 				<h2>Authorization</h2>
-				<p>Enter your master password to authorize the action : "{actionType}"</p>
+				<p>Enter your master password to authorize {actionType} action on your password</p>
 			</header>
 			<div class="content">
 				<form onsubmit={handleAction} autocomplete="off">
-					<input type="password" name="masterPassword" placeholder="Master password" />
-					<button type="submit" class="btn btn--primary">Submit</button>
+					<input
+						type="password"
+						name="masterPassword"
+						placeholder="Master password"
+						class="input input--text"
+					/>
+					<div class="btns-group">
+						<button type="submit" class="btn btn--primary">Submit</button>
+						<button class="btn btn--secondary" onclick={handleCloseModal}>Go back</button>
+					</div>
+					{#if askMasterPasswordErrorMessage}
+						<div class="alert alert--error">
+							<p>{askMasterPasswordErrorMessage}</p>
+						</div>
+					{/if}
 				</form>
-				<button
-					class="btn btn--secondary"
-					onclick={() => {
-						askMasterPassword = false;
-					}}>Go back</button
-				>
 			</div>
 		</div>
 	</div>
@@ -143,15 +169,17 @@
 			</header>
 			<div class="content">
 				<form onsubmit={handleEditPassword} autocomplete="off">
-					<input type="text" name="password" placeholder="Password" />
-					<button type="submit" class="btn btn--primary">Submit</button>
+					<input type="text" name="password" placeholder="Password" class="input input--text" />
+					<div class="btns-group">
+						<button type="submit" class="btn btn--primary">Submit</button>
+						<button class="btn btn--secondary" onclick={handleCloseModal}>Go back</button>
+					</div>
+					{#if editPasswordErrorMessage}
+						<div class="alert alert--error">
+							<p>{editPasswordErrorMessage}</p>
+						</div>
+					{/if}
 				</form>
-				<button
-					class="btn btn--secondary"
-					onclick={() => {
-						askMasterPassword = false;
-					}}>Go back</button
-				>
 			</div>
 		</div>
 	</div>
@@ -165,14 +193,11 @@
 			</header>
 			<div class="content">
 				<form onsubmit={handleDeletePassword} autocomplete="off">
-					<button type="submit" class="btn btn--primary">Yes</button>
+					<div class="btn-groups">
+						<button type="submit" class="btn btn--primary">Yes</button>
+						<button class="btn btn--secondary" onclick={handleCloseModal}>Go back</button>
+					</div>
 				</form>
-				<button
-					class="btn btn--secondary"
-					onclick={() => {
-						askMasterPassword = false;
-					}}>Go back</button
-				>
 			</div>
 		</div>
 	</div>
