@@ -326,7 +326,7 @@
 				transition: 0.15s ease-out;
 
 				&:hover {
-					background: $primary-light;
+					background: $bg-primary;
 					color: $fg;
 				}
 			}

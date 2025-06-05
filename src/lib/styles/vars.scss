@@ -10,17 +10,18 @@ $font: 'Inter', Arial, Helvetica, sans-serif;
 $bg: #f9f9f9;
 $bg-light: #ffffff;
 $bg-dark: #e2e2e2;
+$bg-primary: rgba(255, 122, 50, 0.3);
+$bg-red: rgba(255, 0, 0, 0.3);
+$bg-green: rgba(0, 128, 0, 0.3);
 
 $fg: #090909;
 $fg-reverse: #fafafa;
 $fg-grey: #2f2f2f;
 
 $primary: #ff5900;
-$primary-light: rgba(255, 122, 50, 0.3);
+$primary-light: #ff7a32;
 $black: #090909;
 $black-light: #2b2b2b;
-$red-light: rgba(255, 0, 0, 0.3);
-$green-light: rgba(0, 128, 0, 0.3);
 
 $border: 1px solid rgba(0, 0, 0, 0.2);
 $border-reverse: 1px solid rgba(255, 255, 255, 0.2);

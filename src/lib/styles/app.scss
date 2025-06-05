@@ -6,7 +6,7 @@ html {
 
 	::-webkit-scrollbar {
 		width: 6px;
-		background: $primary-light;
+		background: $bg-primary;
 		border-left: $border;
 	}
 	::-webkit-scrollbar-thumb {
@@ -88,19 +88,19 @@ h2 {
 	border: $border;
 
 	&--warning {
-		background: $primary-light;
+		background: $bg-primary;
 	}
 	&--error {
-		background: $red-light;
+		background: $bg-red;
 	}
 	&--success {
-		background: $green-light;
+		background: $bg-green;
 	}
 }
 
-section {
+section,
+.container {
 	margin: 0 auto 4rem;
-	max-width: $max-width;
 	background: $bg-light;
 	border: $border;
 	border-radius: 0.5rem;
@@ -110,18 +110,49 @@ section {
 	}
 	.content {
 		padding: 1rem;
+	}
+}
 
-		form {
+section {
+	max-width: $max-width;
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+
+		.inputs-group {
+			width: 100%;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0.75rem;
+		}
+	}
+}
+.container {
+	max-width: 500px;
+
+	h2 {
+		margin-bottom: 1rem;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+
+		.inputs-group {
+			width: 100%;
 			display: flex;
 			flex-direction: column;
 			gap: 0.75rem;
-
-			.inputs-group {
-				width: 100%;
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 0.75rem;
-			}
 		}
+		input {
+			width: 100%;
+		}
+	}
+	a {
+		margin-top: 2rem;
+		text-decoration: underline;
+		color: $fg-grey;
 	}
 }
