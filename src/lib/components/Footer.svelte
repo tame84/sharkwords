@@ -6,8 +6,9 @@
 	@use '../styles/vars.scss' as *;
 
 	footer {
-		border-top: $border;
+		margin-top: 4rem;
 		padding: 2rem 0;
+		border-top: $border;
 	}
 	p {
 		text-align: center;

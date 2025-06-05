@@ -10,13 +10,13 @@
 		e.preventDefault();
 		passwordInput.value = generatePassword();
 	};
-	const clearMessage = () => {
+	const clearMessage = (): void => {
 		setTimeout(() => {
 			errorMessage = '';
 			successMessage = '';
 		}, 3000);
 	};
-	const handleAddPassword = async (e: SubmitEvent) => {
+	const handleAddPassword = async (e: SubmitEvent): Promise<void> => {
 		e.preventDefault();
 
 		const form = e.target as HTMLFormElement;

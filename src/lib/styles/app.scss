@@ -59,6 +59,15 @@ a {
 			background: $black-light;
 		}
 	}
+	&--tertiary {
+		height: auto;
+		padding: 0;
+		color: $fg-grey;
+
+		&:hover {
+			color: $fg;
+		}
+	}
 }
 .input {
 	padding: 0.75rem 0.625rem;
@@ -101,10 +110,14 @@ h2 {
 section,
 .container,
 .modal-content {
-	margin: 0 auto 4rem;
+	margin: 0 auto 2rem;
 	background: $bg-light;
 	border: $border;
 	border-radius: 0.5rem;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
 
 	header {
 		padding: 2rem 1rem;
